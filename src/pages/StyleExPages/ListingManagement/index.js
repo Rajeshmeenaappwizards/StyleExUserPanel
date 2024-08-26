@@ -273,7 +273,7 @@ const ListingManagement = ({ header = true }) => {
       )}
       <ToastContainer autoClose={2000} limit={1} />
       <Container fluid>
-        {header && <BreadCrumb title="User Management" pageTitle="" />}
+        {header && <BreadCrumb title="User Products" pageTitle="" />}
         <Row>
           <Col lg={12}>
             <Card id="orderList">
