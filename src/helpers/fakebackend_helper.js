@@ -29,7 +29,7 @@ export const changeStatusData = (data) =>
 
 //Products
 export const getAllProductsData = (data) =>
-  api.get(`${url.BASE_URL}/admin/product`, data);
+  api.get(`${url.BASE_URL}/product`, data);
 
 export const changeProductStatusData = (data) =>
   api.put(`${url.BASE_URL}/admin/product/status`, data);

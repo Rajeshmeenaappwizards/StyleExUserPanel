@@ -94,19 +94,19 @@ const Navdata = () => {
       //   },
       // ],
     },
-    {
-      id: "UserManagement",
-      label: "User Management",
-      icon: "ri-dashboard-line",
-      link: "/user-management",
-      stateVariables: isUserManagement,
-      click: function (e) {
-        e.preventDefault();
-        setIsUserManagement(!isUserManagement);
-        setIscurrentState("UserManagement");
-        updateIconSidebar(e);
-      },
-    },
+    // {
+    //   id: "UserManagement",
+    //   label: "User Management",
+    //   icon: "ri-dashboard-line",
+    //   link: "/user-management",
+    //   stateVariables: isUserManagement,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsUserManagement(!isUserManagement);
+    //     setIscurrentState("UserManagement");
+    //     updateIconSidebar(e);
+    //   },
+    // },
     {
       id: "setting",
       label: "Settings",
