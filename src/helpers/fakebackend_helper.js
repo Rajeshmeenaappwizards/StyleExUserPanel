@@ -15,7 +15,7 @@ export const getLoggedInUser = () => {
 
 //? LOGIN API
 export const postLogin = (data) =>
-  api.create(`${url.BASE_URL}/admin/auth/login`, data);
+  api.create(`${url.BASE_URL}/auth/login`, data);
 
 //Users
 export const getAllUsersData = (data) =>
@@ -50,7 +50,7 @@ export const postFakeRegister = (data) =>
 export const postFakeLogin = (data) => api.create(url.POST_FAKE_LOGIN, data);
 
 export const postOtp = (data) =>
-  api.create(`${url.BASE_URL}/api/user/auth/verify-otp`, data);
+  api.create(`${url.BASE_URL}/auth/verify-otp`, data);
 
 export const postRegister = (data) =>
   api.create(`${url.BASE_URL}/api/admin/register`, data);

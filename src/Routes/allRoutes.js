@@ -35,6 +35,8 @@ import Otp from "../pages/Authentication/Otp";
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
+import WelcomeAdmin from "../pages/Authentication/WelcomeAdmin";
+
 
 //Charts
 
@@ -85,6 +87,8 @@ const publicRoutes = [
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
+  { path: "/welcome-admin/:token", component: <WelcomeAdmin /> },
+
 
   { path: "/otp", component: <Otp /> },
   { path: "/register", component: <Register /> },

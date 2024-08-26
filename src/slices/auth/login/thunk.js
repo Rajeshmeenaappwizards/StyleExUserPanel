@@ -101,7 +101,7 @@ export const resetLoginFlag = () => async (dispatch) => {
   }
 };
 
-export const loginApi = createAsyncThunk("/admin/auth/login", async (data) => {
+export const loginApi = createAsyncThunk("/auth/login", async (data) => {
   try {
     var response;
     response = postLogin(data);
@@ -111,7 +111,7 @@ export const loginApi = createAsyncThunk("/admin/auth/login", async (data) => {
   }
 });
 
-export const otpApi = createAsyncThunk("api/user/auth/verify-otp", async (data) => {
+export const otpApi = createAsyncThunk("/auth/verify-otp", async (data) => {
   try {
     var response;
     response = postOtp(data);

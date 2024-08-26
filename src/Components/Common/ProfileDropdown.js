@@ -18,7 +18,7 @@ const ProfileDropdown = () => {
     // Inside your component
     const { user } = useSelector(profiledropdownData);
 
-    const [userName, setUserName] = useState("Admin");
+    const [userName, setUserName] = useState("User");
 
     useEffect(() => {
         if (localStorage.getItem("authUser")) {

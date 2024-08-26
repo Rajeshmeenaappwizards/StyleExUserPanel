@@ -55,6 +55,7 @@ const Otp = (props) => {
     useSelector(loginpageData);
 
   const loginRes = useSelector((state) => state.Login.loginData);
+  console.log(loginRes)
 
   useEffect(() => {
     let auth = localStorage.getItem("authUser");
@@ -73,11 +74,12 @@ const Otp = (props) => {
     enableReinitialize: true,
 
     initialValues: {
-      otp: "1234",
-      email: loginRes.email || "",
+      OTP: "",
+      FCM:"",
+      phoneNumber: loginRes.phoneNumber.toString() || "",
     },
     validationSchema: Yup.object({
-      otp: Yup.string().required("Please Enter Your Otp"),
+      OTP: Yup.string().required("Please Enter Your Otp"),
     }),
     onSubmit: (values) => {
       dispatch(otpApi(values));
@@ -137,22 +139,22 @@ const Otp = (props) => {
                             Otp
                           </Label>
                           <Input
-                            name="otp"
+                            name="OTP"
                             className="form-control"
                             placeholder="Enter otp"
                             type="otp"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.otp || ""}
+                            value={validation.values.OTP || ""}
                             invalid={
-                              validation.touched.otp && validation.errors.otp
+                              validation.touched.OTP && validation.errors.OTP
                                 ? true
                                 : false
                             }
                           />
-                          {validation.touched.otp && validation.errors.otp ? (
+                          {validation.touched.OTP && validation.errors.OTP ? (
                             <FormFeedback type="invalid">
-                              {validation.errors.otp}
+                              {validation.errors.OTP}
                             </FormFeedback>
                           ) : null}
                         </div>
