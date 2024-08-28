@@ -28,14 +28,21 @@ export const changeStatusData = (data) =>
   api.put(`${url.BASE_URL}/admin/user/status`, data);
 
 //Products
+export const getAllCategoriesData = (data) =>
+  api.get(`${url.BASE_URL}/categories`, data);
+
 export const getAllProductsData = (data) =>
   api.get(`${url.BASE_URL}/product`, data);
 
-export const changeProductStatusData = (data) =>
-  api.put(`${url.BASE_URL}/admin/product/status`, data);
+export const postProductData = (data) =>
+  api.create(`${url.BASE_URL}/product`, data);
 
-export const getOneProductData = (ID) =>
-  api.get(`${url.BASE_URL}/admin/product/details/${ID}`);
+export const changeProductStatusData = (data) =>
+  api.put(`${url.BASE_URL}/product/status`, data);
+
+export const deleteOneProductData = (ID) =>
+  api.delete(`${url.BASE_URL}/product/${ID}`);
+
 
 // is user is logged in
 export const isUserAuthenticated = () => {

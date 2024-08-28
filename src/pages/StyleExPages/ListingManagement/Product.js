@@ -34,10 +34,7 @@ import SwiperCore from "swiper";
 
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-// import { getProduct, updateProductStatus } from "../../../slices/thunks";
 import { useSelector } from "react-redux";
-import { getOneProductData } from "../../../helpers/fakebackend_helper";
-import { oneProductData } from "../../../slices/product/thunk";
 
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
@@ -110,7 +107,7 @@ function Product(props) {
   };
   // console.log("Product",Product)
   const fetchData = () => {
-    dispatch(oneProductData(params.id));
+    // dispatch(oneProductData(params.id));
   };
 
   useEffect(() => {
@@ -650,7 +647,7 @@ function Product(props) {
                                     )
                                   )}
                                 </ul>
-                              </SimpleBar>
+                              </SimpleBar>  
                             </div>
                           </Col>
                         </Row>

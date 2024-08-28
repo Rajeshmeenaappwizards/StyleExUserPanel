@@ -7,7 +7,7 @@ const StatusModal = ({ open, setOpen, status, onSubmit }) => {
     setOpen(false);
   };
 
-  const data ={
+  const data = {
     status: status,
   }
 
@@ -36,8 +36,18 @@ const StatusModal = ({ open, setOpen, status, onSubmit }) => {
         buttonText: "Cancel",
         buttonClass: "btn-danger",
         titleClass: "text-danger",
-      };
-    }
+      }
+    } else if (status === "delete") {
+      return {
+        title: "Request Deletion",
+        message: "Are you sure you want to Delete this Product?",
+        icon: "https://cdn.lordicon.com/sihdhmig.json",
+        iconColors: "primary:#d9534f,secondary:#f0ad4e",
+        buttonText: "Delete",
+        buttonClass: "btn-danger",
+        titleClass: "text-danger",
+      }
+    };
     return {};
   };
 

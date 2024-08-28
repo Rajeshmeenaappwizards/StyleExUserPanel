@@ -3,8 +3,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import "react-toastify/dist/ReactToastify.css";
 import {
   changeProductStatusData,
+  deleteOneProductData,
+  getAllCategoriesData,
   getAllProductsData,
-  getOneProductData,
+  postProductData,
 } from "../../helpers/fakebackend_helper";
 
 export const allProductsData = createAsyncThunk(
@@ -19,11 +21,23 @@ export const allProductsData = createAsyncThunk(
   }
 );
 
-export const oneProductData = createAsyncThunk(
-  "products/oneProductData",
-  async (params) => {
+export const postProduct = createAsyncThunk(
+  "products/postProduct",
+  async (data) => {
     try {
-      const response = getOneProductData(params);
+      const response = postProductData(data);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async (data) => {
+    try {
+      const response = deleteOneProductData(data);
       return response;
     } catch (error) {
       return error;
@@ -36,6 +50,18 @@ export const changeProductStatus = createAsyncThunk(
   async (data) => {
     try {
       const response = changeProductStatusData(data);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const allCategories = createAsyncThunk(
+  "products/categories",
+  async (data) => {
+    try {
+      const response = getAllCategoriesData(data);
       return response;
     } catch (error) {
       return error;

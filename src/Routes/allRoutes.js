@@ -50,11 +50,14 @@ import Product from "../pages/StyleExPages/ListingManagement/Product";
 import UserManagement from "../pages/StyleExPages/UserManagement";
 import UserProfile from "../pages/StyleExPages/UserManagement/UserProfile";
 import Settings from "../pages/StyleExPages/Settings";
+import AddProduct from "../pages/StyleExPages/ListingManagement/AddProduct";
 
 const authProtectedRoutes = [
   //Swipe routes
   { path: "/dashboard", component: <DashboardEcommerce /> },
   { path: "/listing-management", component: <ListingManagement /> },
+  { path: "/listing-management/all-products", component: <ListingManagement /> },
+  { path: "/listing-management/add-product", component: <AddProduct /> },
   { path: "/listing-management/product/:id", component: <Product /> },
   { path: "/user-management", component: <UserManagement /> },
   { path: "/user-management/user/:id", component: <UserProfile /> },

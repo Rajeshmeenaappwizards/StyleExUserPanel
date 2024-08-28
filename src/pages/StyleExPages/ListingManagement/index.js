@@ -23,7 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
-import { allProductsData, changeProductStatus } from "../../../slices/product/thunk";
+import { allProductsData, changeProductStatus, deleteProduct } from "../../../slices/product/thunk";
 import NoteConfirmation from "../components/NoteConfirmation";
 import Confirmation from "../components/Confirmation";
 
@@ -42,6 +42,8 @@ const ListingManagement = ({ header = true }) => {
   const keywords = useSelector((state) => state.ProductSlice.keyword);
   const pageRes = useSelector((state) => state.ProductSlice.page);
   const productStatusRes = useSelector((state) => state.ProductSlice.changedProductStatus);
+  const productDeleteRes = useSelector((state) => state.ProductSlice.deletedProduct);
+
 
   const fetchData = (val) => {
     dispatch(allProductsData(val)).then((data) => {
@@ -54,13 +56,13 @@ const ListingManagement = ({ header = true }) => {
 
   useEffect(() => {
     let params = {
-      // params.page = pageRes;
+      page: pageRes,
       limit: 10,
       keyword: keywords,
       approved_status: activeStatus,
     };
     fetchData(params);
-  }, [activeStatus, keywords, productStatusRes]);
+  }, [activeStatus, keywords,pageRes, productStatusRes, productDeleteRes]);
 
   const handleUserManagement = (id, data) => {
     setSelectedProductId(id);
@@ -68,18 +70,30 @@ const ListingManagement = ({ header = true }) => {
     setOpen(true);
   };
 
+  const handleDelete = (productId, data) => {
+    setSelectedProductId(productId);
+    setStatus(data);
+    setOpen(true);
+  }
+
   const handleNoteSubmit = (data) => {
     const requestData = {
       productId: selectedProductId,
       approved_status: status,
     };
 
-    if (data && data.note) {
+    if (data?.status === 'delete') {
+      dispatch(deleteProduct(selectedProductId))
+    } else if (data && data.note) {
       requestData.note = data.note;
+      dispatch(changeProductStatus(requestData));
     }
-    dispatch(changeProductStatus(requestData))
+    else {
+      dispatch(changeProductStatus(requestData));
+    }
     setOpen(false);
   };
+
 
   const toggleTab = (tab, type) => {
     if (activeTab !== tab) {
@@ -249,6 +263,23 @@ const ListingManagement = ({ header = true }) => {
           );
         },
       },
+      {
+        header: "Delete",
+        accessorKey: "_id",
+        cell: (cellProps) => {
+          const productId = cellProps.getValue();
+          return (
+            <div
+              color="danger"
+              variant="outline"
+              className="delete-icon-button cursor-pointer"
+              onClick={() => handleDelete(productId, 'delete')}
+            >
+              <i className="ri-delete-bin-line" />
+            </div>
+          );
+        },
+      }
     ],
     []
   );
@@ -262,7 +293,7 @@ const ListingManagement = ({ header = true }) => {
           onSubmit={handleNoteSubmit}
         />
       )}
-      {status && (status === "approved" || status === "cancelled") && (
+      {status && (status === "approved" || status === "cancelled" || status === "delete") && (
         <Confirmation
           open={open}
           setOpen={setOpen}
@@ -352,7 +383,7 @@ const ListingManagement = ({ header = true }) => {
                     isGlobalFilter={true}
                     isProductFilter={true}
                     isAddUserList={false}
-                    customPageSize={8}
+                    customPageSize={10}
                     divClass="table-responsive table-card mb-1"
                     tableClass="align-middle table-nowrap"
                     theadClass="table-light text-muted"

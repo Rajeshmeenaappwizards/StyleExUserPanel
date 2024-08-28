@@ -79,20 +79,20 @@ const Navdata = () => {
         setIscurrentState("ListingManagement");
         updateIconSidebar(e);
       },
-      // subItems: [
-      //   {
-      //     id: "allKeyGroups",
-      //     label: "All Key Chains",
-      //     link: "/all-keygroups",
-      //     parentId: "listingManagement",
-      //   },
-      //   {
-      //     id: "add-keygroup",
-      //     label: "Add Key Chain",
-      //     link: "/add-keygroup",
-      //     parentId: "listingManagement",
-      //   },
-      // ],
+      subItems: [
+        {
+          id: "allProducts",
+          label: "All Products",
+          link: "/listing-management/all-products",
+          parentId: "listingManagement",
+        },
+        {
+          id: "addProduct",
+          label: "Add Product",
+          link: "/listing-management/add-product",
+          parentId: "listingManagement",
+        },
+      ],
     },
     // {
     //   id: "UserManagement",

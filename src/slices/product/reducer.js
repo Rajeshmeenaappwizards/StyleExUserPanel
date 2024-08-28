@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allProductsData, changeProductStatus, oneProductData } from "./thunk";
+import { allCategories, allProductsData, changeProductStatus, deleteProduct, postProduct } from "./thunk";
 
 const initialState = {
   products: [],
+  categories: [],
   product: {},
+  postedProduct: {},
+  deletedProduct: {},
   changedProductStatus: {},
   error: null,
   keyword: "",
@@ -18,6 +21,9 @@ const ProductSlice = createSlice({
     },
     setPage(state, action) {
       state.page = action.payload;
+    },
+    resetpostedProduct(state, action) {
+      state.postedProduct = {};
     },
     resetProductState(state) {
       state.product = {};
@@ -38,14 +44,6 @@ const ProductSlice = createSlice({
       alert(action.error.message);
     });
 
-    builder.addCase(oneProductData.fulfilled, (state, action) => {
-      state.product = action.payload;
-    });
-    builder.addCase(oneProductData.rejected, (state, action) => {
-      state.error = action.error || null;
-      alert(action.error.message);
-    });
-
     builder.addCase(changeProductStatus.fulfilled, (state, action) => {
       state.changedProductStatus = action.payload;
     });
@@ -53,9 +51,33 @@ const ProductSlice = createSlice({
       state.error = action.error || null;
       alert(action.error.message);
     });
+
+    builder.addCase(postProduct.fulfilled, (state, action) => {
+      state.postedProduct = action.payload;
+    });
+    builder.addCase(postProduct.rejected, (state, action) => {
+      state.error = action.error || null;
+      alert(action.error.message);
+    });
+
+    builder.addCase(allCategories.fulfilled, (state, action) => {
+      state.categories = action.payload;
+    });
+    builder.addCase(allCategories.rejected, (state, action) => {
+      state.error = action.error || null;
+      alert(action.error.message);
+    });
+
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      state.deletedProduct = action.payload;
+    });
+    builder.addCase(deleteProduct.rejected, (state, action) => {
+      state.error = action.error || null;
+      alert(action.error.message);
+    });
   },
 });
 
-export const { setKeyword, setPage, resetProductState } = ProductSlice.actions;
+export const { setKeyword, setPage, resetProductState, resetpostedProduct } = ProductSlice.actions;
 
 export default ProductSlice.reducer;
