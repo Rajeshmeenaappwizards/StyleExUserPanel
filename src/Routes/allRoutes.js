@@ -58,6 +58,7 @@ const authProtectedRoutes = [
   { path: "/listing-management", component: <ListingManagement /> },
   { path: "/listing-management/all-products", component: <ListingManagement /> },
   { path: "/listing-management/add-product", component: <AddProduct /> },
+  { path: "/listing-management/add-product/:id", component: <AddProduct /> },
   { path: "/listing-management/product/:id", component: <Product /> },
   { path: "/user-management", component: <UserManagement /> },
   { path: "/user-management/user/:id", component: <UserProfile /> },

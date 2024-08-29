@@ -83,7 +83,7 @@ class APIClient {
   /**
    * post given data to url
    */
-  create = (url, data) => {
+  create = (url, data, header = {}) => {
     const token = JSON.parse(localStorage.getItem("authUser"))
       ? JSON.parse(localStorage.getItem("authUser")).token
       : null;
@@ -92,7 +92,7 @@ class APIClient {
       setAuthorization(token);
     }
 
-    return axios.post(url, data);
+    return axios.post(url, data, { headers: header });
   };
   /**
    * Updates data

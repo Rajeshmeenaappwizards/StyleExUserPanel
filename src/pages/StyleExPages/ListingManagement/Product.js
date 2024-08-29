@@ -13,6 +13,7 @@ import {
   Row,
   TabContent,
   TabPane,
+  Button,
 } from "reactstrap";
 
 //Simple bar
@@ -100,7 +101,6 @@ function Product(props) {
 
   const Product = useSelector((state) => state.ProductSlice.product);
   //   const ProductStatusRes = useSelector((state) => state.Products.updateProductStatusState);
-  console.log('Product', Product)
 
   const toggleCustom = (tab) => {
     if (customActiveTab !== tab) {
@@ -159,6 +159,7 @@ function Product(props) {
   //     }
   //   }
   // };
+
 
   document.title = "Product Details | StyleExchange";
 
@@ -223,7 +224,15 @@ function Product(props) {
                     <div className="mt-xl-0 mt-5">
                       <div className="d-flex">
                         <div className="flex-grow-1">
-                          <h4>{productData?.title}</h4>
+                          <div className="d-flex justify-content-between">
+                            <h4>{productData?.title}</h4>
+                            <Link
+                              to={`/listing-management/add-product/${params.id}`}
+                              style={{ textDecoration: 'underline', fontWeight: 'bold' }}
+                            >
+                              Edit
+                            </Link>
+                          </div>
                           <div className="hstack gap-2 flex-wrap">
                             <div className="vr"></div>
                             <div className="text-muted">

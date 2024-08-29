@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allCategories, allProductsData, changeProductStatus, deleteProduct, getOneProduct, postProduct } from "./thunk";
+import { allCategories, allProductsData, changeProductStatus, deleteProduct, getOneProduct, postProduct, updateProduct } from "./thunk";
 import { toast } from "react-toastify";
 import { getOneProductsData } from "../../helpers/fakebackend_helper";
 
@@ -9,6 +9,7 @@ const initialState = {
   product: {},
   postedProduct: {},
   deletedProduct: {},
+  updatedProduct: {},
   changedProductStatus: {},
   error: null,
   keyword: "",
@@ -71,6 +72,15 @@ const ProductSlice = createSlice({
       toast.error(action.error.message);
     });
 
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      state.updatedProduct = action.payload;
+      toast.success(action.payload.message)
+    })
+    builder.addCase(updateProduct.rejected, (state, action) => {
+      state.error = action.error || null;
+      toast.error(action.error.message);
+    })
+
     builder.addCase(allCategories.fulfilled, (state, action) => {
       state.categories = action.payload;
     });
@@ -81,6 +91,7 @@ const ProductSlice = createSlice({
 
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
       state.deletedProduct = action.payload;
+      toast.success(action.payload.message)
     });
     builder.addCase(deleteProduct.rejected, (state, action) => {
       state.error = action.error || null;

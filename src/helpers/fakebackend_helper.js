@@ -38,10 +38,15 @@ export const getOneProductsData = (ID) =>
   api.get(`${url.BASE_URL}/product/${ID}`);
 
 export const postProductData = (data) =>
-  api.create(`${url.BASE_URL}/product`, data);
+  api.create(`${url.BASE_URL}/product`, data, {
+    'Content-Type': 'multipart/form-data'
+  });
 
 export const changeProductStatusData = (data) =>
   api.put(`${url.BASE_URL}/product/status`, data);
+
+export const updateProductData = (data) =>
+  api.put(`${url.BASE_URL}/product`, data);
 
 export const deleteOneProductData = (ID) =>
   api.delete(`${url.BASE_URL}/product/${ID}`);

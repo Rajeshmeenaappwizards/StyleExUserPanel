@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardHeader, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import CategorySelect from '../components/CategorySelect';
 import { useDispatch, useSelector } from 'react-redux';
-import { allCategories, postProduct } from '../../../slices/product/thunk';
+import { allCategories, getOneProduct, postProduct, updateProduct } from '../../../slices/product/thunk';
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
@@ -10,6 +10,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { resetpostedProduct } from '../../../slices/product/reducer';
+import { useNavigate, useParams } from 'react-router-dom';
 
 registerPlugin(FilePondPluginImagePreview);
 
@@ -46,7 +47,7 @@ const AddProduct = () => {
         tags: "",
         views_count: "",
         favorite_count: "",
-        imageUrl: "",
+        imageUrl: [],
     });
 
     const [parentCategory, setParentCategory] = useState([]);
@@ -55,8 +56,11 @@ const AddProduct = () => {
     const [subSubSubCategories, setSubSubSubCategories] = useState([]);
 
     const dispatch = useDispatch();
+    const params = useParams();
+    const navigate = useNavigate();
     const allCategoriesRes = useSelector(state => state.ProductSlice.categories);
     const postProductRes = useSelector(state => state.ProductSlice.postedProduct);
+    const getOneProductRes = useSelector(state => state.ProductSlice.product);
 
     useEffect(() => {
         if (postProductRes && postProductRes.success) {
@@ -70,8 +74,41 @@ const AddProduct = () => {
             //     })
             // }
             dispatch(resetpostedProduct())
+            setTimeout(() => {
+                navigate('/listing-management/all-products')
+            }, 1000)
         }
     }, [postProductRes])
+
+    useEffect(() => {
+        if (params && params.id) {
+            dispatch(getOneProduct(params.id))
+        }
+    }, [params])
+
+    useEffect(() => {
+        if (getOneProductRes && getOneProductRes.success) {
+            const product = getOneProductRes.data;
+            setProductData({
+                ...product,
+                longitude: product.location.coordinates[0],
+                latitude: product.location.coordinates[1],
+                parentCategories_Id: product.parentCategories_Id._id,
+                subCategories_Id: product.subCategories_Id._id,
+                sub_sub_categories_ID: product.sub_sub_categories_ID._id,
+                imageUrl: product.imageUrl
+            });
+            setLevelOneCategory(product.parentCategories_Id._id);
+            setLevelTwoCategory(product.subCategories_Id._id);
+            setLevelThreeCategory(product.sub_sub_categories_ID._id);
+            setFiles(
+                (product.imageUrl || []).map((media) => ({
+                    source: media,
+                    options: { type: "local" },
+                }))
+            );
+        }
+    }, [getOneProductRes]);
 
     const onChangeParantCategory = (selectedOption) => {
         setLevelOneCategory(selectedOption ? selectedOption.value : "");
@@ -114,9 +151,10 @@ const AddProduct = () => {
         dispatch(allCategories());
     };
 
-    const handleInputChange = ({ target: { name, value } }) => {
-        setProductData(prevState => ({
-            ...prevState,
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setProductData((prevData) => ({
+            ...prevData,
             [name]: value,
         }));
     };
@@ -130,9 +168,17 @@ const AddProduct = () => {
 
     const handleSaveChanges = () => {
         const formData = new FormData();
+
+        // Add the product_id if params.id is available
+        if (params.id) {
+            formData.append('product_id', params.id);
+        }
+
+        // Append all fields from productData to formData
         Object.keys(productData).forEach(key => {
+            // Handle array fields separately (e.g., imageUrl)
             if (Array.isArray(productData[key])) {
-                productData[key].forEach((item) => {
+                productData[key].forEach(item => {
                     formData.append(`${key}[]`, item);
                 });
             } else {
@@ -140,22 +186,22 @@ const AddProduct = () => {
             }
         });
 
-        console.log('Sending Form Data:', formData);
-
-        dispatch(postProduct(formData)).then(response => {
-            console.log('API Response:', response);
-        }).catch(error => {
-            console.error('API Error:', error);
+        // Append files to formData, using the file object itself
+        files.forEach(file => {
+            formData.append('imageUrl', file.file);
         });
+
+        // Dispatch appropriate action based on if params.id is available
+        if (params.id) {
+            dispatch(updateProduct(formData));
+        } else {
+            console.log('formData....',formData)
+            dispatch(postProduct(formData));
+        }
     };
 
-    const handleFilePondUpdate = (fileItems) => {
-        const urls = fileItems.map(fileItem => URL.createObjectURL(fileItem.file));
-        setProductData(prevState => ({
-            ...prevState,
-            imageUrl: urls
-        }));
-    };
+
+    console.log('files', files)
 
     return (
         <div className='page-content'>
@@ -518,9 +564,29 @@ const AddProduct = () => {
                                 <div className="filepond-wrapper">
                                     <FilePond
                                         files={files}
-                                        onupdatefiles={handleFilePondUpdate}
+                                        onupdatefiles={setFiles}
                                         allowMultiple={true}
+                                        maxFiles={5}
+                                        name="imageUrl"
                                         labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                                        // onremovefile={(error, file) => {
+                                        //     if (error) {
+                                        //         console.error('Error removing file:', error);
+                                        //         return;
+                                        //     }
+                                        //     setFiles(prevFiles => prevFiles.filter(f => f.id !== file.id));
+                                        // }}
+                                        server={{
+                                            load: (source, load, error, progress, abort, headers) => {
+                                                fetch(new Request(source))
+                                                    .then((response) => response.blob())
+                                                    .then(load)
+                                                    .catch((err) => {
+                                                        console.error("Image loading failed: ", err);
+                                                        abort();
+                                                    });
+                                            },
+                                        }}
                                     />
                                 </div>
                             </FormGroup>
