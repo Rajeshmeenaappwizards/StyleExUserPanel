@@ -6,6 +6,7 @@ import {
   deleteOneProductData,
   getAllCategoriesData,
   getAllProductsData,
+  getOneProductsData,
   postProductData,
 } from "../../helpers/fakebackend_helper";
 
@@ -14,6 +15,18 @@ export const allProductsData = createAsyncThunk(
   async (params) => {
     try {
       const response = getAllProductsData(params);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getOneProduct = createAsyncThunk(
+  "products/getOneProduct",
+  async (params) => {
+    try {
+      const response = getOneProductsData(params);
       return response;
     } catch (error) {
       return error;

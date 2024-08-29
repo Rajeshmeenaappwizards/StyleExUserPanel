@@ -35,6 +35,7 @@ import SwiperCore from "swiper";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { getOneProduct } from "../../../slices/product/thunk";
 
 SwiperCore.use([FreeMode, Navigation, Thumbs]);
 
@@ -99,6 +100,7 @@ function Product(props) {
 
   const Product = useSelector((state) => state.ProductSlice.product);
   //   const ProductStatusRes = useSelector((state) => state.Products.updateProductStatusState);
+  console.log('Product', Product)
 
   const toggleCustom = (tab) => {
     if (customActiveTab !== tab) {
@@ -107,19 +109,19 @@ function Product(props) {
   };
   // console.log("Product",Product)
   const fetchData = () => {
-    // dispatch(oneProductData(params.id));
+    dispatch(getOneProduct(params.id));
   };
 
   useEffect(() => {
     if (params.id) {
       fetchData();
     }
-  }, []);
+  }, [params]);
 
   useEffect(() => {
     if (Product && Product.success) {
       setProductData(Product.data);
-      setSelectedStatus(Product.data.status);
+      // setSelectedStatus(Product.data.approved_status);
     }
   }, [Product]);
 
@@ -129,9 +131,9 @@ function Product(props) {
   //     }
   //   }, [ProductStatusRes]);
 
-  const updateStatus = async (data) => {
-    dispatch(updateProductStatus(data));
-  };
+  // const updateStatus = async (data) => {
+  //   dispatch(updateProductStatus(data));
+  // };
 
   const formattedDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -139,24 +141,24 @@ function Product(props) {
     return formattedDate;
   };
 
-  const handleStatusChange = async (e) => {
-    const status = e.target.value;
-    const message = `Are You Sure You Want To ${status}?`;
+  // const handleStatusChange = async (e) => {
+  //   const status = e.target.value;
+  //   const message = `Are You Sure You Want To ${status}?`;
 
-    if (window.confirm(message)) {
-      const data = {
-        status: e.target.value,
-        productId: params._id,
-      };
-      updateStatus(data);
-    } else {
-      if (status === "rejected") {
-        e.target.value = "approved";
-      } else {
-        e.target.value = "rejected";
-      }
-    }
-  };
+  //   if (window.confirm(message)) {
+  //     const data = {
+  //       status: e.target.value,
+  //       productId: params._id,
+  //     };
+  //     updateStatus(data);
+  //   } else {
+  //     if (status === "rejected") {
+  //       e.target.value = "approved";
+  //     } else {
+  //       e.target.value = "rejected";
+  //     }
+  //   }
+  // };
 
   document.title = "Product Details | StyleExchange";
 
@@ -258,7 +260,7 @@ function Product(props) {
                             Customer Review )
                           </div>
                         </div>
-                        <div className="d-flex align-items-center gap-3">
+                        {/* <div className="d-flex align-items-center gap-3">
                           <div className="">Status</div>
 
                           <select
@@ -275,7 +277,7 @@ function Product(props) {
                             <option
                               selected={
                                 props?.singleTicketDetails?.status ===
-                                "rejected"
+                                  "rejected"
                                   ? true
                                   : false
                               }
@@ -286,7 +288,7 @@ function Product(props) {
                             <option
                               selected={
                                 props?.singleTicketDetails?.status ===
-                                "approved"
+                                  "approved"
                                   ? true
                                   : false
                               }
@@ -297,7 +299,7 @@ function Product(props) {
                             <option
                               selected={
                                 props?.singleTicketDetails?.status ===
-                                "pending_review"
+                                  "pending_review"
                                   ? true
                                   : false
                               }
@@ -327,7 +329,7 @@ function Product(props) {
                               Hidden
                             </option>
                           </select>
-                        </div>
+                        </div> */}
                       </div>
 
                       <Row className="mt-4">
@@ -647,7 +649,7 @@ function Product(props) {
                                     )
                                   )}
                                 </ul>
-                              </SimpleBar>  
+                              </SimpleBar>
                             </div>
                           </Col>
                         </Row>

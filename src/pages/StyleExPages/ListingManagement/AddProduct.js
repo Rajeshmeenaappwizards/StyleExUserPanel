@@ -57,19 +57,18 @@ const AddProduct = () => {
     const dispatch = useDispatch();
     const allCategoriesRes = useSelector(state => state.ProductSlice.categories);
     const postProductRes = useSelector(state => state.ProductSlice.postedProduct);
-    console.log('postProductRes', postProductRes)
 
     useEffect(() => {
         if (postProductRes && postProductRes.success) {
-            {
-                toast(postProductRes.message, {
-                    position: "top-right",
-                    hideProgressBar: false,
-                    className: "bg-success text-white",
-                    progress: undefined,
-                    toastId: "",
-                })
-            }
+            // {
+            //     toast(postProductRes.message, {
+            //         position: "top-right",
+            //         hideProgressBar: false,
+            //         className: "bg-success text-white",
+            //         progress: undefined,
+            //         toastId: "",
+            //     })
+            // }
             dispatch(resetpostedProduct())
         }
     }, [postProductRes])

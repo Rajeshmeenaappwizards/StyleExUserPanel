@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allCategories, allProductsData, changeProductStatus, deleteProduct, postProduct } from "./thunk";
+import { allCategories, allProductsData, changeProductStatus, deleteProduct, getOneProduct, postProduct } from "./thunk";
+import { toast } from "react-toastify";
+import { getOneProductsData } from "../../helpers/fakebackend_helper";
 
 const initialState = {
   products: [],
@@ -41,7 +43,15 @@ const ProductSlice = createSlice({
     });
     builder.addCase(allProductsData.rejected, (state, action) => {
       state.error = action.error || null;
-      alert(action.error.message);
+      toast.error(action.error.message);
+    });
+
+    builder.addCase(getOneProduct.fulfilled, (state, action) => {
+      state.product = action.payload;
+    });
+    builder.addCase(getOneProduct.rejected, (state, action) => {
+      state.error = action.error || null;
+      toast.error(action.error.message);
     });
 
     builder.addCase(changeProductStatus.fulfilled, (state, action) => {
@@ -49,15 +59,16 @@ const ProductSlice = createSlice({
     });
     builder.addCase(changeProductStatus.rejected, (state, action) => {
       state.error = action.error || null;
-      alert(action.error.message);
+      toast.error(action.error.message);
     });
 
     builder.addCase(postProduct.fulfilled, (state, action) => {
       state.postedProduct = action.payload;
+      toast.success(action.payload.message)
     });
     builder.addCase(postProduct.rejected, (state, action) => {
       state.error = action.error || null;
-      alert(action.error.message);
+      toast.error(action.error.message);
     });
 
     builder.addCase(allCategories.fulfilled, (state, action) => {
@@ -65,7 +76,7 @@ const ProductSlice = createSlice({
     });
     builder.addCase(allCategories.rejected, (state, action) => {
       state.error = action.error || null;
-      alert(action.error.message);
+      toast.error(action.error.message);
     });
 
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
@@ -73,7 +84,7 @@ const ProductSlice = createSlice({
     });
     builder.addCase(deleteProduct.rejected, (state, action) => {
       state.error = action.error || null;
-      alert(action.error.message);
+      toast.error(action.error.message);
     });
   },
 });

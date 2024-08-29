@@ -34,6 +34,9 @@ export const getAllCategoriesData = (data) =>
 export const getAllProductsData = (data) =>
   api.get(`${url.BASE_URL}/product`, data);
 
+export const getOneProductsData = (ID) =>
+  api.get(`${url.BASE_URL}/product/${ID}`);
+
 export const postProductData = (data) =>
   api.create(`${url.BASE_URL}/product`, data);
 
