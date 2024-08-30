@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { allCategories, allProductsData, changeProductStatus, deleteProduct, getOneProduct, postProduct, updateProduct } from "./thunk";
 import { toast } from "react-toastify";
-import { getOneProductsData } from "../../helpers/fakebackend_helper";
 
 const initialState = {
   products: [],
@@ -30,6 +29,9 @@ const ProductSlice = createSlice({
     },
     resetProductState(state) {
       state.product = {};
+    },
+    resetUpdateProductState(state) {
+      state.updatedProduct = {};
     },
     resetProductsState(state) {
       state.products = [];
@@ -100,6 +102,6 @@ const ProductSlice = createSlice({
   },
 });
 
-export const { setKeyword, setPage, resetProductState, resetpostedProduct } = ProductSlice.actions;
+export const { setKeyword, setPage, resetProductState, resetpostedProduct,resetUpdateProductState } = ProductSlice.actions;
 
 export default ProductSlice.reducer;

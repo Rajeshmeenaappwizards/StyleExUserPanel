@@ -9,7 +9,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { resetpostedProduct } from '../../../slices/product/reducer';
+import { resetpostedProduct, resetProductState, resetUpdateProductState } from '../../../slices/product/reducer';
 import { useNavigate, useParams } from 'react-router-dom';
 
 registerPlugin(FilePondPluginImagePreview);
@@ -55,30 +55,34 @@ const AddProduct = () => {
     const [subSubCategories, setSubSubCategories] = useState([]);
     const [subSubSubCategories, setSubSubSubCategories] = useState([]);
 
+
     const dispatch = useDispatch();
     const params = useParams();
     const navigate = useNavigate();
     const allCategoriesRes = useSelector(state => state.ProductSlice.categories);
     const postProductRes = useSelector(state => state.ProductSlice.postedProduct);
     const getOneProductRes = useSelector(state => state.ProductSlice.product);
+    const updateProductRes = useSelector(state => state.ProductSlice.updatedProduct);
+
 
     useEffect(() => {
         if (postProductRes && postProductRes.success) {
-            // {
-            //     toast(postProductRes.message, {
-            //         position: "top-right",
-            //         hideProgressBar: false,
-            //         className: "bg-success text-white",
-            //         progress: undefined,
-            //         toastId: "",
-            //     })
-            // }
             dispatch(resetpostedProduct())
             setTimeout(() => {
                 navigate('/listing-management/all-products')
             }, 1000)
         }
     }, [postProductRes])
+
+    useEffect(() => {
+        if (updateProductRes && updateProductRes.success) {
+            dispatch(resetUpdateProductState())
+            dispatch(resetProductState())
+            setTimeout(() => {
+                navigate('/listing-management/all-products')
+            }, 1000)
+        }
+    }, [updateProductRes])
 
     useEffect(() => {
         if (params && params.id) {
@@ -166,6 +170,7 @@ const AddProduct = () => {
         }));
     };
 
+
     const handleSaveChanges = () => {
         const formData = new FormData();
 
@@ -186,22 +191,17 @@ const AddProduct = () => {
             }
         });
 
-        // Append files to formData, using the file object itself
         files.forEach(file => {
             formData.append('imageUrl', file.file);
         });
-
         // Dispatch appropriate action based on if params.id is available
         if (params.id) {
             dispatch(updateProduct(formData));
         } else {
-            console.log('formData....',formData)
             dispatch(postProduct(formData));
         }
     };
 
-
-    console.log('files', files)
 
     return (
         <div className='page-content'>
@@ -566,16 +566,16 @@ const AddProduct = () => {
                                         files={files}
                                         onupdatefiles={setFiles}
                                         allowMultiple={true}
-                                        maxFiles={5}
+                                        // maxFiles={5}
                                         name="imageUrl"
                                         labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-                                        // onremovefile={(error, file) => {
-                                        //     if (error) {
-                                        //         console.error('Error removing file:', error);
-                                        //         return;
-                                        //     }
-                                        //     setFiles(prevFiles => prevFiles.filter(f => f.id !== file.id));
-                                        // }}
+                                        onremovefile={(error, file) => {
+                                            if (error) {
+                                                console.error('Error removing file:', error);
+                                                return;
+                                            }
+                                            setFiles(prevFiles => prevFiles.filter(f => f.id !== file.id));
+                                        }}
                                         server={{
                                             load: (source, load, error, progress, abort, headers) => {
                                                 fetch(new Request(source))
