@@ -59,6 +59,8 @@ const ProductSlice = createSlice({
 
     builder.addCase(changeProductStatus.fulfilled, (state, action) => {
       state.changedProductStatus = action.payload;
+      toast.success(action.payload.message)
+
     });
     builder.addCase(changeProductStatus.rejected, (state, action) => {
       state.error = action.error || null;

@@ -41,6 +41,7 @@ const ListingManagement = ({ header = true }) => {
   const allProductsRes = useSelector((state) => state.ProductSlice.products);
   const keywords = useSelector((state) => state.ProductSlice.keyword);
   const pageRes = useSelector((state) => state.ProductSlice.page);
+  const keywordRes = useSelector((state) => state.ProductSlice.keyword);
   const productStatusRes = useSelector((state) => state.ProductSlice.changedProductStatus);
   const productDeleteRes = useSelector((state) => state.ProductSlice.deletedProduct);
 
@@ -58,11 +59,11 @@ const ListingManagement = ({ header = true }) => {
     let params = {
       page: pageRes,
       limit: 10,
-      keyword: keywords,
+      search: keywordRes,
       approved_status: activeStatus,
     };
     fetchData(params);
-  }, [activeStatus, keywords,pageRes, productStatusRes, productDeleteRes]);
+  }, [activeStatus, keywordRes, pageRes, productStatusRes, productDeleteRes]);
 
   const handleUserManagement = (id, data) => {
     setSelectedProductId(id);
@@ -93,7 +94,6 @@ const ListingManagement = ({ header = true }) => {
     }
     setOpen(false);
   };
-
 
   const toggleTab = (tab, type) => {
     if (activeTab !== tab) {

@@ -86,9 +86,11 @@ const AddProduct = () => {
 
     useEffect(() => {
         if (params && params.id) {
-            dispatch(getOneProduct(params.id))
+            dispatch(getOneProduct(params.id));
+        } else {
+            dispatch(resetProductState());
         }
-    }, [params])
+    }, [params, dispatch]);
 
     useEffect(() => {
         if (getOneProductRes && getOneProductRes.success) {
@@ -394,19 +396,19 @@ const AddProduct = () => {
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="sell_price">Sell Price*</Label>
+                                <Label for="sellprice">Sell Price*</Label>
                                 <Input
                                     type="text"
                                     name="sell_price"
                                     value={productData.sell_price}
                                     onChange={handleInputChange}
-                                    placeholder="Enter sell_price"
+                                    placeholder="Enter sell price"
                                 />
                             </FormGroup>
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="purchase_price">Purchase Price*</Label>
+                                <Label for="purchaseprice">Purchase Price*</Label>
                                 <Input
                                     type="text"
                                     name="purchase_price"
@@ -418,7 +420,7 @@ const AddProduct = () => {
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="rent_price">Rent Price*</Label>
+                                <Label for="rentprice">Rent Price*</Label>
                                 <Input
                                     type="text"
                                     name="rent_price"
@@ -430,7 +432,7 @@ const AddProduct = () => {
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="rent_depositAmount">Rent Deposit Amount*</Label>
+                                <Label for="rentdepositAmount">Rent Deposit Amount*</Label>
                                 <Input
                                     type="text"
                                     name="rent_depositAmount"
@@ -478,7 +480,7 @@ const AddProduct = () => {
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="active_status">Active Status*</Label>
+                                <Label for="activestatus">Active Status*</Label>
                                 <Input
                                     type="select"
                                     name="active_status"
@@ -493,7 +495,7 @@ const AddProduct = () => {
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="available_status">Available Status*</Label>
+                                <Label for="availablestatus">Available Status*</Label>
                                 <Input
                                     type="text"
                                     name="available_status"
@@ -517,7 +519,7 @@ const AddProduct = () => {
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="views_count">Views Count*</Label>
+                                <Label for="viewscount">Views Count*</Label>
                                 <Input
                                     type="text"
                                     name="views_count"
@@ -529,7 +531,7 @@ const AddProduct = () => {
                         </Col>
                         <Col lg={12}>
                             <FormGroup>
-                                <Label for="favorite_count">Favorite Count*</Label>
+                                <Label for="favoritecount">Favorite Count*</Label>
                                 <Input
                                     type="text"
                                     name="favorite_count"
